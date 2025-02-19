@@ -2,7 +2,7 @@
   <header class="py-10">
     <div class="flex items-center">
       <h1
-        class="text-lg font-bold tracking-wider uppercase text-slate-200 bg-slate-900 py-2 px-6 rounded-full"
+        class="text-lg font-bold tracking-wider uppercase text-gray-200 bg-gray-800 py-2 px-6 rounded-full"
       >
         Trip:Gallery
       </h1>
