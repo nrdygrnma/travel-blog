@@ -15,7 +15,7 @@
         class="absolute inset-0 bg-gray-950 bg-opacity-50 transition duration-500 group-hover:bg-opacity-10 z-10"
       ></div>
       <h3
-        class="transform-gpu border-2 border-white/0 group-hover:border-white/50 transition-all ease-in-out absolute inset-0 flex items-center justify-center text-white text-4xl font-light z-20 duration-500 group-hover:scale-95"
+        class="transform-gpu border-2 border-white/0 group-hover:border-white/50 transition-all text-5xl sm:text-4xl ease-in-out absolute inset-0 flex items-center justify-center text-white font-light z-20 duration-500 group-hover:scale-95"
         style="will-change: transform"
       >
         {{ destination.title }}
