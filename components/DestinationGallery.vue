@@ -12,8 +12,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useDestinations } from "~/composables/useDestinations";
 import DestinationCard from "~/components/DestinationCard.vue";
+import { useDestinations } from "~/composables/useDestinations";
 
 const { destinations } = useDestinations();
 </script>

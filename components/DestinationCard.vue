@@ -4,46 +4,71 @@
       :to="`/destinations/${destination.id}`"
       class="relative block group overflow-hidden"
     >
-      <img
-        :alt="destination.title"
-        :class="[aspectClass]"
-        :src="thumbnailUrl"
-        class="ease-in-out object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
-        style="will-change: transform"
-      />
+      <div class="relative">
+        <img
+          :alt="destination.title"
+          :class="imageClasses"
+          :src="thumbnailUrl"
+          style="will-change: transform"
+          @load="handleLoad"
+        />
+
+        <div
+          v-if="!isLoaded"
+          class="absolute inset-0 flex items-center justify-center bg-gray-700"
+        >
+          <LoadingSpinner />
+        </div>
+      </div>
+
       <div
         class="absolute inset-0 bg-gray-950 bg-opacity-50 transition duration-500 group-hover:bg-opacity-10 z-10"
       ></div>
-      <h3
-        class="transform-gpu border-2 border-white/0 group-hover:border-white/50 transition-all text-5xl sm:text-4xl ease-in-out absolute inset-0 flex items-center justify-center text-white font-light z-20 duration-500 group-hover:scale-95"
-        style="will-change: transform"
-      >
-        {{ destination.title }}
-      </h3>
+
+      <transition name="fade">
+        <h3
+          v-if="isLoaded"
+          class="transform-gpu border-2 border-white/0 group-hover:border-white/50 transition-all text-5xl sm:text-4xl ease-in-out absolute inset-0 flex items-center justify-center text-white font-light z-20 duration-500 group-hover:scale-95"
+          style="will-change: transform"
+        >
+          {{ destination.title }}
+        </h3>
+      </transition>
     </NuxtLink>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { Destination } from "~/types";
+import LoadingSpinner from "~/components/base/LoadingSpinner.vue";
 
-const props = defineProps<{
-  destination: Destination;
-}>();
-
-const { getThumbnail } = useDirectusFiles();
+const props = defineProps<{ destination: Destination }>();
 
 const aspectOptions = [
   "aspect-square",
-  "aspect-video", // 16:9
-  "aspect-[3/2]", // 3:2
-  "aspect-[4/3]", // 4:3
+  "aspect-video",
+  "aspect-[3/2]",
+  "aspect-[4/3]",
   "aspect-[1/1.5]",
-  "aspect-[5/4]", // 5:4
-  "aspect-[16/10]", // 8:5
+  "aspect-[5/4]",
+  "aspect-[16/10]",
 ];
 
-const aspectClass = ref("");
+const { getThumbnail } = useDirectusFiles();
+
+const isLoaded = ref(false);
+const aspectClass =
+  aspectOptions[Math.floor(Math.random() * aspectOptions.length)];
+
+const handleLoad = () => {
+  isLoaded.value = true;
+};
+
+const imageClasses = computed(() => [
+  aspectClass,
+  "ease-in-out object-cover w-full h-full transition-all duration-500 group-hover:scale-105",
+  isLoaded.value ? "opacity-100" : "opacity-0",
+]);
 
 const thumbnailUrl = computed(() =>
   getThumbnail(props.destination.coverImage, {
@@ -51,9 +76,21 @@ const thumbnailUrl = computed(() =>
     fit: "cover",
   }),
 );
-
-onMounted(() => {
-  const randomIndex = Math.floor(Math.random() * aspectOptions.length);
-  aspectClass.value = aspectOptions[randomIndex];
-});
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.8s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+</style>
