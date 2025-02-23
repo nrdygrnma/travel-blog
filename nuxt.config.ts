@@ -7,7 +7,9 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "shadcn-nuxt",
     "@nuxtjs/tailwindcss",
+    "@morev/vue-transitions/nuxt",
   ],
+  vueTransitions: {},
   css: ["assets/css/reset.css"],
   shadcn: {
     prefix: "",
